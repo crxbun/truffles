@@ -1,4 +1,4 @@
-from truffles import app
-import truffles.server
+#from truffles import app
+#import truffles.server
 
-app.run(debug=True)
+#app.run(debug=True)
