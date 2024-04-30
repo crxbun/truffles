@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy import inspect
 import os
 import sshtunnel
 
@@ -26,9 +27,19 @@ db = SQLAlchemy(app)
 #class Base(DeclarativeBase):
  #   pass
 
+class Truffle(db.Model):
+    truffleID = db.Column(db.Integer, unique = True, primary_key = True)
+    truffleName = db.Column(db.String(100), nullable = False)
+
+
 #db =SQLAlchemy(app, model_class=Base)
 
 # from truffles.models import ... import models here
 
 with app.app_context():
     db.create_all()
+    inspector = inspect(db.engine)
+    if inspector.has_table('truffle'):
+        # Drop the table
+        Truffle.__table__.drop(db.engine)
+    
