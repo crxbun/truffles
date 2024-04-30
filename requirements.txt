@@ -28,3 +28,6 @@ Werkzeug==3.0.1
 WTForms==3.1.1
 sshtunnel==0.4.0
 mysqlclient==2.2.4
+pymysql==1.1.0
+cryptography==42.0.5
+mysql-connector-python==8.4.0
