@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Truffles</title>
+</head>
+<body>
+    <h1>View Truffles</h1>
+    <p>User ID: {{ user_id }}</p>
+    <ul>
+        {% for truffle_id in truffle_ids %}
+            <li>{{ truffle_id }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

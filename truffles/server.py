@@ -101,5 +101,24 @@ def disconnect():
     send({"name": name, "message": "has left the room"}, to=room)
     print(f"{name} has left the room {room}")
 
+
+@app.route('/viewTruffles/')
+def viewTruffles():
+    username = session.get('name')
+    user = User.query.filter_by(username=username).first()
+    # Check if the user exists
+    if user:
+        # Get the user ID
+        user_id = user.id
+        
+        # Query the UserTruffle table to get the truffle IDs associated with the user ID
+        truffle_ids = [user_truffle.truffleID for user_truffle in UserTruffle.query.filter_by(userID=user_id).all()]
+        
+        # Render the template with the truffle IDs
+        return render_template('viewTruffles.html', user_id=user_id, truffle_ids=truffle_ids)
+    else:
+        # Render an error message if the user does not exist
+        return render_template('error.html', message='User not found')
+
 if __name__ == "__main__":
     socketio.run(app, debug=True)
