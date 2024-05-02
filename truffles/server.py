@@ -142,12 +142,13 @@ def disconnect():
             db.session.delete(chatroom)
             db.session.commit()
         else:
+            send({"name": name, "message": "has left the room"}, to=room)
+            print(f"{name} has left the room {room}")
             Participants.query.filter_by(code=room, user_id=user_id).delete()
             UserChatroom.query.filter_by(code=room, user_id=user_id).delete()
             db.session.commit()
     
-    send({"name": name, "message": "has left the room"}, to=room)
-    print(f"{name} has left the room {room}")
+    
 
 @app.route("/get_messages/<code>")
 def get_messages(code):
