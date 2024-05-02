@@ -55,6 +55,10 @@
     console.log("Disconnected from server");
   });
 
+  window.addEventListener("beforeunload", () => {
+    socketio.emit("disconnect");
+  });
+  
   socketio.on("message", (data) => {
     createMessage(data.name, data.message);
   });

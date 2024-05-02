@@ -128,11 +128,9 @@ def connect(auth):
 def disconnect():
     room = session.get("room")
     name = session.get("name")
-
-
     leave_room(room)
-    if Chatroom.query.filter_by(code=room).first():
-        chatroom=Chatroom.query.filter_by(code=room).first()
+    chatroom=Chatroom.query.filter_by(code=room).first()
+    if chatroom:
         chatroom.participants_count -= 1
         if chatroom.participants_count <= 0:
             #   DELETE ALL MSGS IN CHATROOM
