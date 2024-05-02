@@ -93,6 +93,8 @@
 
     socketio.emit("message", { message: message });
     messageInput.value = "";
+
+    fetchMessages();
   };
 
   document.getElementById("send-btn").addEventListener("click", sendMessage);
