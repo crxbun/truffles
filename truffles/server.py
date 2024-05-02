@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, jsonify, flash, session
 from flask import session as login_session
-from flask_socketio import join_room, leave_room, send, SocketIO
+from flask_socketio import join_room, leave_room, send, emit, SocketIO
 import random
 from truffles.models import User, Truffle, TruffleAccessories, UserTruffle, Chatroom, Messages, Participants, UserChatroom
 from truffles import app, db 
@@ -87,7 +87,7 @@ def message(data):
     
     # Emit the message data to all clients in the room
     message_data = {"name": sender_name, "message": message_body}
-    send(message_data, to=room)
+    emit("message", message_data, room=room, include_self=False)
     print(f"{sender_name} said: {message_body}")
 
     socketio.emit("fetch_messages", room=room)

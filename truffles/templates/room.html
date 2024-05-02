@@ -72,6 +72,7 @@
 
   socketio.on("connect", () => {
     console.log("Connected to server");
+    fetchMessages();
   });
 
   socketio.on("disconnect", () => {
@@ -96,7 +97,7 @@
     const message = messageInput.value.trim();
     if (message === "") return;
 
-    socketio.emit("message", { message: message });
+    socketio.send("message", { message: message });
     messageInput.value = "";
 
     
