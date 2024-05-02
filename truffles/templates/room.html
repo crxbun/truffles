@@ -47,7 +47,7 @@
         </span>
     </div>
     `;
-    messages.innerHTML += content;
+    messages.insertAdjacentHTML('beforeend', content);
   };
 
   function deleteMessage(msg) {

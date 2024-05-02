@@ -105,7 +105,7 @@ def connect(auth):
     #    return
     
     join_room(room)
-    send({"name": name, "message": "has entered the room"}, to=room)
+    send({"name": name, "message": "has entered the room"}, room=room)
     chatroom = Chatroom.query.filter_by(code=room).first()
 
     
@@ -145,7 +145,7 @@ def disconnect():
             Participants.query.filter_by(code=room, user_id = user_id).delete()
             UserChatroom.query.filter_by(code = room, user_id = user_id).delete()
             db.session.commit()
-    send({"name": name, "message": "has left the room"}, to=room)
+    send({"name": name, "message": "has left the room"}, room=room)
     print(f"{name} has left the room {room}")
     
 
