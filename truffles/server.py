@@ -90,6 +90,8 @@ def message(data):
     send(message_data, to=room)
     print(f"{sender_name} said: {message_body}")
 
+    socketio.emit("fetch_messages", room=room)
+
 
 @socketio.on("connect")
 def connect(auth):
