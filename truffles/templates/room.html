@@ -51,6 +51,8 @@
         .then((response) => {
           if (response.ok) {
             alert("Message deleted successfully");
+            location.reload();
+            //testing reload since we require reload in order for the delete to update
           } else {
             throw new Error("Failed to delete message");
           }
