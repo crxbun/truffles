@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Truffles</title>
+</head>
+<body>
+    <h1>View Truffles</h1>
+    <p>Your User ID: {{ user_id }}</p>
+    <h1>Truffles</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age (Seconds)</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for truffle in truffles %}
+            <tr>
+                <td>{{ truffle.id }}</td>
+                <td>{{ truffle.name }}</td>
+                <td>{{ truffle.age }}</td>
+                <td>
+                    <form method="post" action="/changeTruffleName" style="display: inline;">
+                        <input type="hidden" name="truffle_id" value="{{ truffle.id }}">
+                        <input type="text" name="new_truffle_name" placeholder="New Name" required>
+                        <button type="submit">Change Name</button>
+                    </form>
+                    <form method="post" action="/deleteTruffle" style="display: inline;">
+                        <input type="hidden" name="truffle_id" value="{{ truffle.id }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Add New Truffle</h2>
+    <form method="post">
+        <label for="truffle_name">Truffle Name:</label>
+        <input type="text" id="truffle_name" name="truffle_name" required>
+        <button type="submit">Add Truffle</button>
+    </form>
+
+
+</body>
+</html>

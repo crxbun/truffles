@@ -138,5 +138,62 @@ def disconnect():
     send({"name": name, "message": "has left the room"}, to=room)
     print(f"{name} has left the room {room}")
 
+@app.route('/viewTruffles', methods=['GET', 'POST'])
+def viewTruffles():
+    username = session.get('name')
+    user = User.query.filter_by(username=username).first()
+    if user:
+        user_id = user.id
+        truffle_ids = [user_truffle.truffle_id for user_truffle in UserTruffle.query.filter_by(user_id=user_id).all()]
+
+        if request.method == 'POST':
+            truffle_name = request.form.get('truffle_name')
+            if truffle_name:
+                # Create a new truffle
+                new_truffle = Truffle(name=truffle_name, age=0, status=0)
+                db.session.add(new_truffle)
+                db.session.commit()
+                truffle_ids.append(new_truffle.id)  # Add the new truffle to the list
+
+                user_truffle = UserTruffle(user_id=user_id, truffle_id=new_truffle.id)
+                db.session.add(user_truffle)
+                db.session.commit()
+
+        truffles = Truffle.query.filter(Truffle.id.in_(truffle_ids)).all()
+        return render_template('viewTruffles.html', user_id=user_id, truffles=truffles)
+    else:
+        return render_template('error.html', message='User not found')
+
+
+@app.route('/deleteTruffle', methods=['POST'])
+def deleteTruffle():
+    truffle_id = request.form.get('truffle_id')
+    truffle = Truffle.query.get(truffle_id)
+    #delets from truffle table
+    if truffle:
+        db.session.delete(truffle)
+        db.session.commit()
+    
+    #deletes from user_truffle table
+    user_truffle = UserTruffle.query.filter_by(truffle_id=truffle_id).first()
+    if user_truffle:
+        db.session.delete(user_truffle)
+        db.session.commit()
+
+    return redirect(url_for('viewTruffles'))
+
+@app.route('/changeTruffleName', methods=['POST'])
+def changeTruffleName():
+    truffle_id = request.form.get('truffle_id')
+    new_truffle_name = request.form.get('new_truffle_name')
+    
+    truffle = Truffle.query.get(truffle_id)
+    if truffle:
+        truffle.name = new_truffle_name
+        db.session.commit()
+        
+    return redirect(url_for('viewTruffles'))
+
+
 if __name__ == "__main__":
     socketio.run(app, debug=True)
