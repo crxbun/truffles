@@ -12,10 +12,13 @@
     />
     <button type="button" name="send" id="send-btn">Send</button>
   </div>
-  <div class = "truffles">
-    <a href="{{ url_for('viewTruffles', user_id=user_id) }}" class="btn btn-primary">View Truffles</a>
+  <div class="truffles">
+    <a
+      href="{{ url_for('viewTruffles', user_id=user_id) }}"
+      class="btn btn-primary"
+      >View Truffles</a
+    >
   </div>
-
 </div>
 <script type="text/javascript">
   var socketio = io();
@@ -55,7 +58,6 @@
         .then((response) => {
           if (response.ok) {
             alert("Message deleted successfully");
-            location.reload();
             //testing reload since we require reload in order for the delete to update
           } else {
             throw new Error("Failed to delete message");
