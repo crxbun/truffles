@@ -128,6 +128,7 @@ def connect(auth):
 def disconnect():
     room = session.get("room")
     name = session.get("name")
+    user_id = session.get("user_id")
     leave_room(room)
     chatroom=Chatroom.query.filter_by(code=room).first()
     if chatroom:
@@ -137,6 +138,7 @@ def disconnect():
             Messages.query.filter_by(chatroom_code=room).delete()
             # delete all participants
             Participants.query.filter_by(code=room).delete()
+            UserChatroom.query.filter_by(code = room, user_id = user_id).delete()
             db.session.delete(chatroom)
             db.session.commit()
         else:
