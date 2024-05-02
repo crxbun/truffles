@@ -150,6 +150,16 @@ def get_messages(code):
         })
     return jsonify(messages=messages_json)
 
+@app.route("/delete_message/<msg>", methods=["DELETE"])
+def delete_message(msg):
+    message = Messages.query.filter_by(body=msg).first()
+    if not message:
+        return jsonify({"error": "NOO MESSAGE"}), 404
+
+    db.session.delete(message)
+    db.session.commit()
+    return jsonify({"message": "DELETED MESSAGE"}), 200
+
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)
