@@ -142,6 +142,8 @@ def disconnect():
             db.session.delete(chatroom)
             db.session.commit()
         else:
+            Participants.query.filter_by(code=room, user_id = user_id).delete()
+            UserChatroom.query.filter_by(code = room, user_id = user_id).delete()
             db.session.commit()
     send({"name": name, "message": "has left the room"}, to=room)
     print(f"{name} has left the room {room}")
