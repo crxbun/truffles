@@ -1,50 +1,61 @@
 from truffles import db
-from sqlalchemy import Integer, VARCHAR, Text, ForeignKey, Boolean, DateTime
-from sqlalchemy.orm import mapped_column
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, Boolean, DateTime
+from sqlalchemy.orm import relationship
 import datetime
 
 class User(db.Model):
-        __tablename__ = 'user'
-        id = mapped_column(Integer, primary_key=True, autoincrement=True, unique=True)
-        username = mapped_column(VARCHAR(200), unique=True, nullable=False)
-        password = mapped_column(Integer, nullable=False)
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String(200), unique=True, nullable=False)
+    #password = Column(String, nullable=False)
+    # Define relationship with Messages
+    messages = relationship('Messages', backref='sender', lazy=True)
 
 class Truffle(db.Model):
-        __tablename__ = 'truffle'
-        id = mapped_column(Integer, autoincrement=True, unique=True, primary_key=True)
-        name = mapped_column(VARCHAR(200), unique=True, nullable=False)
-        age = mapped_column(Integer, nullable=False)
-        status = mapped_column(Integer, nullable=False)
+    __tablename__ = 'truffle'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(200), unique=True, nullable=False)
+    age = Column(Integer, nullable=False)
+    status = Column(Integer, nullable=False)
 
 class UserTruffle(db.Model):
-        __tablename__ = 'user_truffle'
-        id = mapped_column(Integer, autoincrement=True, unique=True, nullable=False, primary_key=True)
-        userID = mapped_column(ForeignKey('user.id'), nullable=False)
-        truffleID = mapped_column(ForeignKey('truffle.id'), nullable=False)
+    __tablename__ = 'user_truffle'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    truffle_id = Column(Integer, ForeignKey('truffle.id'), nullable=False)
 
 class TruffleAccessories(db.Model):
-        __tablename__= 'truffle_accessories'
-        id = mapped_column(Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
-        truffleID = mapped_column(ForeignKey('user.id'))
-        headwear = mapped_column(VARCHAR(300), nullable=True)
+    __tablename__= 'truffle_accessories'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    truffle_id = Column(Integer, ForeignKey('truffle.id'), nullable=False)
+    headwear = Column(String(300), nullable=True)
 
 class Chatroom(db.Model):
-        __tablename__ = 'chatroom'
-        id = mapped_column(Integer, unique=True, primary_key=True, autoincrement=True)
-        message = mapped_column(Text, nullable=False)
-        userID = mapped_column(ForeignKey('user.id'), nullable=False)
+    __tablename__ = 'chatroom'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    code = Column(String(200), unique=True, nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    participants_count = Column(Integer, default=0, nullable=False)
+    # Define relationship with Messages
+    messages = relationship('Messages', backref='chatroom', lazy=True)
 
 class Messages(db.Model):
-        __tablename__ = 'messages'
-        id = mapped_column(Integer, primary_key=True, autoincrement=True)
-        chatroomID = mapped_column(ForeignKey('chatroom.id'), nullable=False)
-        senderID = mapped_column(ForeignKey('user.id'), nullable=False)
-        body = mapped_column(Text, nullable=False)
-        read = mapped_column(Boolean, nullable=False, default=False)
-        timestamp = mapped_column(DateTime, default=datetime.datetime.now(datetime.timezone.utc))
+    __tablename__ = 'messages'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    chatroom_code = Column(String(200), ForeignKey('chatroom.code'), nullable=False)
+    sender_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    body = Column(Text, nullable=False)
+    read = Column(Boolean, nullable=False, default=False)
+    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
 
 class Participants(db.Model):
-        __tablename__= 'participants'
-        id = mapped_column(Integer, unique=True, primary_key=True, autoincrement=True)
-        chatroomID = mapped_column(ForeignKey('chatroom.id'), nullable=False)
-        userID = mapped_column(ForeignKey('user.id'), nullable=False)
+    __tablename__= 'participants'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    code = Column(String(200), ForeignKey('chatroom.code'), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+
+class UserChatroom(db.Model):
+    __tablename__='user_chatroom'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    code = Column(String(200), ForeignKey('chatroom.code'), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)

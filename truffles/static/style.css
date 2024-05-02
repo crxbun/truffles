@@ -1,4 +1,9 @@
-.content {
+
+  .body {
+    background-image: url("./chatmenu_bg.png")
+  }
+  
+  .content {
     display: flex;
     align-items: center;
     justify-content: center;
