@@ -10,7 +10,6 @@ from string import ascii_uppercase
 socketio = SocketIO(app)
 
 rooms = {}
-
 def generate_unique_code(length):
     while True:
         code = ""
@@ -99,8 +98,9 @@ def connect(auth):
 
     if not room or not name:
         return
-    
-    if not Messages.query.filter_by(chatroom_code=room).first():
+    #WE DONT WANT TO DELETE CHATROOM IF WE'RE THE PERSON THAT MADE IT
+    user_in_chatroom = UserChatroom.query.filter_by(code=room, user_id=session["user_id"]).first()
+    if not Messages.query.filter_by(chatroom_code=room).first() and not user_in_chatroom:
         leave_room(room)
         return
     
@@ -108,16 +108,18 @@ def connect(auth):
     send({"name": name, "message": "has entered the room"}, to=room)
     chatroom = Chatroom.query.filter_by(code=room).first()
 
-    if not UserChatroom.query.filter(UserChatroom.code == room, UserChatroom.user_id == session["user_id"]).first():
+    
+    if not user_in_chatroom:
         db.session.add(UserChatroom(code=room, user_id=session["user_id"]))
         db.session.commit()
 
-    if not Participants.query.filter(Participants.code == room, Participants.user_id == session["user_id"]).first():
+    participant = Participants.query.filter(Participants.code == room, Participants.user_id == session["user_id"]).first()
+    if not participant:
         db.session.add(Participants(code=room, user_id=session["user_id"]))
-        chatroom.participants_count += 1
-        db.session.commit()
-
-
+        if chatroom:  # Check if chatroom exists
+            chatroom.participants_count += 1
+            db.session.commit()
+        
     db.session.commit()
 
     print(f"{name} joined room {room}")
@@ -126,14 +128,21 @@ def connect(auth):
 def disconnect():
     room = session.get("room")
     name = session.get("name")
-    leave_room(room)
 
+
+    leave_room(room)
     if Chatroom.query.filter_by(code=room).first():
         chatroom=Chatroom.query.filter_by(code=room).first()
         chatroom.participants_count -= 1
         if chatroom.participants_count <= 0:
+            #   DELETE ALL MSGS IN CHATROOM
+            Messages.query.filter_by(chatroom_code=room).delete()
+            # delete all participants
+            Participants.query.filter_by(code=room).delete()
             db.session.delete(chatroom)
-        db.session.commit()
+            db.session.commit()
+        else:
+            db.session.commit()
     
     send({"name": name, "message": "has left the room"}, to=room)
     print(f"{name} has left the room {room}")
@@ -150,6 +159,61 @@ def get_messages(code):
         })
     return jsonify(messages=messages_json)
 
+@app.route('/viewTruffles', methods=['GET', 'POST'])
+def viewTruffles():
+    username = session.get('name')
+    user = User.query.filter_by(username=username).first()
+    if user:
+        user_id = user.id
+        truffle_ids = [user_truffle.truffle_id for user_truffle in UserTruffle.query.filter_by(user_id=user_id).all()]
+
+        if request.method == 'POST':
+            truffle_name = request.form.get('truffle_name')
+            if truffle_name:
+                # Create a new truffle
+                new_truffle = Truffle(name=truffle_name, age=0, status=0)
+                db.session.add(new_truffle)
+                db.session.commit()
+                truffle_ids.append(new_truffle.id)  # Add the new truffle to the list
+
+                user_truffle = UserTruffle(user_id=user_id, truffle_id=new_truffle.id)
+                db.session.add(user_truffle)
+                db.session.commit()
+
+        truffles = Truffle.query.filter(Truffle.id.in_(truffle_ids)).all()
+        return render_template('viewTruffles.html', user_id=user_id, truffles=truffles)
+    else:
+        return render_template('error.html', message='User not found')
+
+
+@app.route('/deleteTruffle', methods=['POST'])
+def deleteTruffle():
+    truffle_id = request.form.get('truffle_id')
+    truffle = Truffle.query.get(truffle_id)
+    #delets from truffle table
+    if truffle:
+        db.session.delete(truffle)
+        db.session.commit()
+    
+    #deletes from user_truffle table
+    user_truffle = UserTruffle.query.filter_by(truffle_id=truffle_id).first()
+    if user_truffle:
+        db.session.delete(user_truffle)
+        db.session.commit()
+
+    return redirect(url_for('viewTruffles'))
+
+@app.route('/changeTruffleName', methods=['POST'])
+def changeTruffleName():
+    truffle_id = request.form.get('truffle_id')
+    new_truffle_name = request.form.get('new_truffle_name')
+    
+    truffle = Truffle.query.get(truffle_id)
+    if truffle:
+        truffle.name = new_truffle_name
+        db.session.commit()
+        
+    return redirect(url_for('viewTruffles'))
 @app.route("/delete_message/<msg>", methods=["DELETE"])
 def delete_message(msg):
     message = Messages.query.filter_by(body=msg).first()
