@@ -10,7 +10,6 @@ from string import ascii_uppercase
 socketio = SocketIO(app)
 
 rooms = {}
-
 def generate_unique_code(length):
     while True:
         code = ""
@@ -99,8 +98,9 @@ def connect(auth):
 
     if not room or not name:
         return
-    
-    if not Messages.query.filter_by(chatroom_code=room).first():
+    #WE DONT WANT TO DELETE CHATROOM IF WE'RE THE PERSON THAT MADE IT
+    user_in_chatroom = UserChatroom.query.filter_by(code=room, user_id=session["user_id"]).first()
+    if not Messages.query.filter_by(chatroom_code=room).first() and not user_in_chatroom:
         leave_room(room)
         return
     
@@ -108,16 +108,18 @@ def connect(auth):
     send({"name": name, "message": "has entered the room"}, to=room)
     chatroom = Chatroom.query.filter_by(code=room).first()
 
-    if not UserChatroom.query.filter(UserChatroom.code == room, UserChatroom.user_id == session["user_id"]).first():
+    
+    if not user_in_chatroom:
         db.session.add(UserChatroom(code=room, user_id=session["user_id"]))
         db.session.commit()
 
-    if not Participants.query.filter(Participants.code == room, Participants.user_id == session["user_id"]).first():
+    participant = Participants.query.filter(Participants.code == room, Participants.user_id == session["user_id"]).first()
+    if not participant:
         db.session.add(Participants(code=room, user_id=session["user_id"]))
-        chatroom.participants_count += 1
-        db.session.commit()
-
-
+        if chatroom:  # Check if chatroom exists
+            chatroom.participants_count += 1
+            db.session.commit()
+        
     db.session.commit()
 
     print(f"{name} joined room {room}")
@@ -126,14 +128,21 @@ def connect(auth):
 def disconnect():
     room = session.get("room")
     name = session.get("name")
-    leave_room(room)
 
+
+    leave_room(room)
     if Chatroom.query.filter_by(code=room).first():
         chatroom=Chatroom.query.filter_by(code=room).first()
         chatroom.participants_count -= 1
         if chatroom.participants_count <= 0:
+            #   DELETE ALL MSGS IN CHATROOM
+            Messages.query.filter_by(chatroom_code=room).delete()
+            # delete all participants
+            Participants.query.filter_by(code=room).delete()
             db.session.delete(chatroom)
-        db.session.commit()
+            db.session.commit()
+        else:
+            db.session.commit()
     
     send({"name": name, "message": "has left the room"}, to=room)
     print(f"{name} has left the room {room}")
