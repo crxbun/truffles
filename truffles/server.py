@@ -138,7 +138,7 @@ def disconnect():
             Messages.query.filter_by(chatroom_code=room).delete()
             # delete all participants
             Participants.query.filter_by(code=room).delete()
-            UserChatroom.query.filter_by(code = room, user_id = user_id).delete()
+            UserChatroom.query.filter_by(code = room).delete()
             db.session.delete(chatroom)
             db.session.commit()
         else:
