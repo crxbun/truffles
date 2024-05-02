@@ -100,9 +100,9 @@ def connect(auth):
         return
     #WE DONT WANT TO DELETE CHATROOM IF WE'RE THE PERSON THAT MADE IT
     user_in_chatroom = UserChatroom.query.filter_by(code=room, user_id=session["user_id"]).first()
-    if not Messages.query.filter_by(chatroom_code=room).first() and not user_in_chatroom:
-        leave_room(room)
-        return
+   # if not Messages.query.filter_by(chatroom_code=room).first() and not user_in_chatroom:
+    #    leave_room(room)
+    #    return
     
     join_room(room)
     send({"name": name, "message": "has entered the room"}, to=room)
