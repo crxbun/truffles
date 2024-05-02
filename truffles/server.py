@@ -138,6 +138,18 @@ def disconnect():
     send({"name": name, "message": "has left the room"}, to=room)
     print(f"{name} has left the room {room}")
 
+@app.route("/get_messages/<code>")
+def get_messages(code):
+    chatroom_messages = Messages.query.filter_by(chatroom_code=code).all()
+    messages_json = []
+    for message in chatroom_messages:
+        messages_json.append({
+            'sender': message.sender.username, 
+            'body': message.body,
+            'timestamp': message.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+        })
+    return jsonify(messages=messages_json)
+
 @app.route('/viewTruffles', methods=['GET', 'POST'])
 def viewTruffles():
     username = session.get('name')
@@ -193,7 +205,6 @@ def changeTruffleName():
         db.session.commit()
         
     return redirect(url_for('viewTruffles'))
-
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)

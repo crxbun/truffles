@@ -1,74 +1,297 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #53718b;
+  color: #333333;
+  background-size: 50% auto;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
 
-  .body {
-    background-image: url("./chatmenu_bg.png")
-  }
-  
-  .content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .join {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-  }
-  
-  .create-btn {
-    width: 100%;
-  }
-  
-  .message-box {
-    border-color: black;
-    border-width: 2px;
-    border-style: solid;
-    border-radius: 10px;
-    background-color: whitesmoke;
-    height: 80vh;
-    display: flex;
-    flex-direction: column;
-    width: 80vw;
-    align-items: stretch;
-  }
-  
-  .messages {
-    overflow-y: scroll;
-    flex: 1;
-    width: 100%;
-  }
-  
-  .inputs {
-    padding: 10px;
-    display: flex;
-  }
-  
-  h2 {
-    text-align: center;
-  }
-  
-  #message {
-    flex: 1;
-  }
-  
-  .text {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-  
-  .muted {
-    font-size: 10px;
-    color: darkgray;
-  }
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.message-box {
+  border: 2px solid rgb(201, 14, 14);
+  border-radius: 10px;
+  background-color: rgb(211, 16, 16);
+  height: 80vh;
+  width: 80vw;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #5c2828;
+}
+
+.inputs {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.buttons {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-btn,
+.join-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(78, 96, 142);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-btn:hover,
+.join-btn:hover {
+  background-color: rgb(41, 102, 151);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 24px;
+  color: #111010;
+}
+
+.text {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #464545;
+}
+
+.muted {
+  font-size: 12px;
+  color: #999;
+}
+
+.form-container {
+  max-width: 500px;
+  max-height: 600px;
+  margin: 100px auto 50px;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #4c80b48c;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.form-container:hover {
+  transform: scale(1.02);
+
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form h3 {
+  margin-bottom: 15px;
+  text-align: center;
+  color: white;
+}
+
+form div {
+  margin-bottom: 15px;
+  height: 50px;
+}
+
+form label {
+  font-weight: bold;
+  color: white;
+  margin-right: 20px;
+}
+
+form input[type="text"],
+form button {
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 200px;
+}
+
+form button {
+  background-color: rgb(78, 96, 142);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: rgb(39, 135, 76);
+}
+
+.image-container {
+  text-align: center; 
+  margin-bottom: 20px;
+}
+
+.top-image {
+  max-width: 60%;
+  height: auto;
+}
+
+.description-container {
+  max-width: 600px;
+  margin: 0 auto 30px; 
+  padding: 0 20px; 
+  text-align: center; 
+}
+
+.description-container h2 {
+  margin-bottom: 10px; 
+  font-size: 24px;
+  color: white;
+}
+
+.description-container p {
+  font-size: 16px; 
+  line-height: 1.5; 
+  color: rgb(221, 218, 218);
+}
+
+/* playing with room css */
+.message-box {
+  background-color: #f9f9f9;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 50px auto;
+  max-width: 600px;
+}
+
+.message-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.messages {
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.text {
+  margin-bottom: 10px;
+}
+
+.text span {
+  display: block;
+}
+
+.text strong {
+  color: #333;
+}
+
+.muted {
+  font-size: 12px;
+  color: #999;
+}
+
+.inputs {
+  display: flex;
+  align-items: center;
+}
+
+.inputs input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.inputs button {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(105, 150, 195);
+  color: white;
+  cursor: pointer;
+}
+
+.inputs button:hover {
+  background-color: rgb(12, 139, 78);
+}
+
+.delete-btn {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  border-radius: 50%; 
+  background-color: white; 
+  color: rgb(11, 11, 11); 
+  border: 2px solid rgb(12, 11, 11); 
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; 
+}
+.delete-btn:hover {
+  background-color: red;
+  color: white; 
+}
+
+header {
+  background-color: #253146;
+  color: #f2ebeb;
+  padding: 10px 0;
+  text-align: center;
+  margin: 0;
+}
+
+footer {
+  background-color: #253146;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  bottom: 0;
+  width: 100%;
+  margin: 0;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+

@@ -1,24 +1,68 @@
-{% extends 'base.html' %} {% block content %}
-<form method="post" class="buttons">
-  <h3>Enter The Chat Room</h3>
-  <div>
-    <label>Name:</label>
-    <input
-      type="text"
-      placeholder="Pick a name!"
-      name="name"
-      value="{{name}}"
+{% extends 'base.html' %} {% block header %}
+<header>
+  <h1>Welcome to Truffle Shuffle!</h1>
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Log-in</a></li>
+      <li><a href="#">Sign-up</a></li>
+    </ul>
+  </nav>
+</header>
+{% endblock %} {% block content %}
+<div class="content">
+  <div class="image-container">
+    <img
+      src="{{ url_for('static', filename='truffleclear.png') }}"
+      alt="Truffle Banner"
+      class="top-image"
     />
+    <div class="description-container">
+      <h2>Welcome to Truffle Shuffle!</h2>
+      <p>
+        Truffle Shuffle" is a cozy messaging web app game centered around online
+        pets known as Truffles, coupled with an engaging level system. Players
+        can create their unique Truffles to keep them as pets, adding a
+        delightful twist to the messaging experience. These adorable companions
+        roam around while users chat with others, fostering a lively and
+        interactive environment!!
+      </p>
+    </div>
   </div>
-  <div class="join">
-    <input type="text" placeholder="Room Code" name="code" value="{{code}}" />
-    <button type="submit" name="join">Join a Room</button>
+  <div class="form-container">
+    <form method="post" class="buttons">
+      <h3>Enter The Chat Room</h3>
+      <div>
+        <label>Name:</label>
+        <input
+          type="text"
+          placeholder="Pick a name!"
+          name="name"
+          value="{{name}}"
+        />
+      </div>
+      <div class="join">
+        <input
+          type="text"
+          placeholder="Room Code"
+          name="code"
+          value="{{code}}"
+        />
+        <button type="submit" name="join">Join a Room</button>
+      </div>
+      <button type="submit" name="create" class="create-btn">
+        Create a Room
+      </button>
+      {% if error %}
+      <ul>
+        <li>{{error}}</li>
+      </ul>
+      {% endif %}
+    </form>
   </div>
-  <button type="submit" name="create" class="create-btn">Create a Room</button>
-  {% if error %}
-  <ul>
-    <li>{{error}}</li>
-  </ul>
-  {% endif %}
-</form>
+</div>
+{% endblock %} {% block footer %}
+<footer>
+  <p>&copy; 2024 Truffle Shuffle. All rights reserved.</p>
+</footer>
 {% endblock %}

@@ -1,5 +1,4 @@
-{% extends 'base.html' %} 
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <div class="message-box">
   <h2>Chat Room: {{ code }}</h2>
   <div class="messages" id="messages"></div>
@@ -11,9 +10,7 @@
       name="message"
       id="message"
     />
-    <button type="button" name="send" id="send-btn">
-      Send
-    </button>
+    <button type="button" name="send" id="send-btn">Send</button>
   </div>
   <div class = "truffles">
     <a href="{{ url_for('viewTruffles', user_id=user_id) }}" class="btn btn-primary">View Truffles</a>
@@ -24,11 +21,23 @@
   var socketio = io();
   const messages = document.getElementById("messages");
 
-  const createMessage = (name, msg) => {
+  //gets all of the messages in the message table with the same code
+  const fetchMessages = () => {
+    fetch(`/get_messages/{{ code }}`)
+      .then((response) => response.json())
+      .then((data) => {
+        data.messages.forEach((message) => {
+          createMessage(message.sender, message.body, message.timestamp);
+        });
+      });
+  };
+  fetchMessages();
+
+  const createMessage = (name, msg, messageId) => {
     const content = `
-    <div class="text">
+    <div class="text" data-message-id="${messageId}" style="color: green;">
         <span>
-            <strong>${name}</strong>: ${msg}
+          <button class="delete-btn">x</button><strong>${name}</strong>: ${msg} 
         </span>
         <span class="muted">
             ${new Date().toLocaleString()}
