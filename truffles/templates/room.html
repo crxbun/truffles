@@ -29,11 +29,11 @@
   };
   fetchMessages();
 
-  const createMessage = (name, msg) => {
+  const createMessage = (name, msg, messageId) => {
     const content = `
-    <div class="text" style="color: green;">
+    <div class="text" data-message-id="${messageId}" style="color: green;">
         <span>
-            <strong>${name}</strong>: ${msg}
+          <button class="delete-btn">x</button><strong>${name}</strong>: ${msg} 
         </span>
         <span class="muted">
             ${new Date().toLocaleString()}

@@ -15,9 +15,9 @@ body {
 }
 
 .message-box {
-  border: 2px solid black;
+  border: 2px solid rgb(201, 14, 14);
   border-radius: 10px;
-  background-color: whitesmoke;
+  background-color: rgb(211, 16, 16);
   height: 80vh;
   width: 80vw;
   display: flex;
@@ -32,7 +32,7 @@ body {
   flex: 1;
   overflow-y: auto;
   padding: 10px;
-  background-color: #f5f5f5;
+  background-color: #5c2828;
 }
 
 .inputs {
@@ -87,18 +87,20 @@ h2 {
 }
 
 .form-container {
-  max-width: 400px;
+  max-width: 500px;
+  max-height: 600px;
   margin: 100px auto 50px;
   padding: 20px;
   border: 2px solid #ccc;
   border-radius: 10px;
-  background-color: #f9f9f98c;
+  background-color: #4c80b48c;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
 
 .form-container:hover {
   transform: scale(1.02);
+
 }
 
 form {
@@ -109,14 +111,18 @@ form {
 form h3 {
   margin-bottom: 15px;
   text-align: center;
+  color: white;
 }
 
 form div {
   margin-bottom: 15px;
+  height: 50px;
 }
 
 form label {
   font-weight: bold;
+  color: white;
+  margin-right: 20px;
 }
 
 form input[type="text"],
@@ -125,6 +131,7 @@ form button {
   margin-top: 5px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  width: 200px;
 }
 
 form button {
@@ -158,12 +165,13 @@ form button:hover {
 .description-container h2 {
   margin-bottom: 10px; 
   font-size: 24px;
+  color: white;
 }
 
 .description-container p {
   font-size: 16px; 
   line-height: 1.5; 
-  color: rgb(6, 5, 5);
+  color: rgb(221, 218, 218);
 }
 
 /* playing with room css */
@@ -235,3 +243,55 @@ form button:hover {
 .inputs button:hover {
   background-color: rgb(12, 139, 78);
 }
+
+.delete-btn {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  border-radius: 50%; 
+  background-color: white; 
+  color: rgb(11, 11, 11); 
+  border: 2px solid rgb(12, 11, 11); 
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; 
+}
+.delete-btn:hover {
+  background-color: red;
+  color: white; 
+}
+
+header {
+  background-color: #253146;
+  color: #f2ebeb;
+  padding: 10px 0;
+  text-align: center;
+  margin: 0;
+}
+
+footer {
+  background-color: #253146;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  bottom: 0;
+  width: 100%;
+  margin: 0;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+

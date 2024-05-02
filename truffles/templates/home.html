@@ -1,4 +1,15 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block header %}
+<header>
+  <h1>Welcome to Truffle Shuffle!</h1>
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Log-in</a></li>
+      <li><a href="#">Sign-up</a></li>
+    </ul>
+  </nav>
+</header>
+{% endblock %} {% block content %}
 <div class="content">
   <div class="image-container">
     <img
@@ -50,4 +61,8 @@
     </form>
   </div>
 </div>
+{% endblock %} {% block footer %}
+<footer>
+  <p>&copy; 2024 Truffle Shuffle. All rights reserved.</p>
+</footer>
 {% endblock %}
