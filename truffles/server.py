@@ -214,6 +214,7 @@ def changeTruffleName():
         db.session.commit()
         
     return redirect(url_for('viewTruffles'))
+
 @app.route("/delete_message/<msg>", methods=["DELETE"])
 def delete_message(msg):
     message = Messages.query.filter_by(body=msg).first()
