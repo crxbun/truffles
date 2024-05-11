@@ -1,53 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='../static/truffle.css')}}"
+    />
     <title>User Truffles</title>
-</head>
-<body>
+  </head>
+  <body>
     <a href="/">Home</a>
-    <h1>View Truffles</h1>
-    <p>Your User ID: {{ user_id }}</p>
-    <h1>Truffles</h1>
-    <table>
+
+    <div class="image-container left">
+      <img
+        class="bigger-image"
+        src="{{ url_for('static', filename='singebrowntruffle.png') }}"
+        alt="Truffle left brown"
+      />
+      <img
+        class="smaller-image"
+        src="{{ url_for('static', filename='singletruffleclear.png') }}"
+        alt="Truffle left brown"
+      />
+    </div>
+
+    <div class="container">
+      <h1>View Truffles</h1>
+      <p>Your User ID: {{ user_id }}</p>
+      <h1>Truffles</h1>
+      <table>
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Age (Seconds)</th>
-                
-            </tr>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age (Seconds)</th>
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody>
-            {% for truffle in truffles %}
-            <tr>
-                <td>{{ truffle.id }}</td>
-                <td>{{ truffle.name }}</td>
-                <td>{{ truffle.age }}</td>
-                <td>
-                    <form method="post" action="/changeTruffleName" style="display: inline;">
-                        <input type="hidden" name="truffle_id" value="{{ truffle.id }}">
-                        <input type="text" name="new_truffle_name" placeholder="New Name" required>
-                        <button type="submit">Change Name</button>
-                    </form>
-                    <form method="post" action="/deleteTruffle" style="display: inline;">
-                        <input type="hidden" name="truffle_id" value="{{ truffle.id }}">
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
+          {% for truffle in truffles %}
+          <tr>
+            <td>{{ truffle.id }}</td>
+            <td>{{ truffle.name }}</td>
+            <td>{{ truffle.age }}</td>
+            <td>
+              <form
+                method="post"
+                action="/changeTruffleName"
+                style="display: inline"
+              >
+                <input
+                  type="hidden"
+                  name="truffle_id"
+                  value="{{ truffle.id }}"
+                />
+                <input
+                  type="text"
+                  name="new_truffle_name"
+                  placeholder="New Name"
+                  required
+                />
+                <button type="submit">Change Name</button>
+              </form>
+              <form
+                method="post"
+                action="/deleteTruffle"
+                style="display: inline"
+              >
+                <input
+                  type="hidden"
+                  name="truffle_id"
+                  value="{{ truffle.id }}"
+                />
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
         </tbody>
-    </table>
+      </table>
+    </div>
 
-    <h2>Add New Truffle</h2>
-    <form method="post">
+    <div class="image-container right">
+      <img
+        class="bigger-image"
+        src="{{ url_for('static', filename='cool truffle.png') }}"
+        alt="Truffle Righ Blue"
+      />
+      <img
+        class="medium-image"
+        src="{{ url_for('static', filename='secondflippedtruffle.png') }}"
+        alt="Truffle Right Red"
+      />
+    </div>
+
+    <div class="container">
+      <h2>Add New Truffle</h2>
+      <form method="post">
         <label for="truffle_name">Truffle Name:</label>
-        <input type="text" id="truffle_name" name="truffle_name" required>
+        <input type="text" id="truffle_name" name="truffle_name" required />
         <button type="submit">Add Truffle</button>
-    </form>
-
-
-</body>
+      </form>
+    </div>
+  </body>
 </html>
