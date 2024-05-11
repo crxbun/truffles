@@ -295,3 +295,19 @@ nav ul li a {
   text-decoration: none;
 }
 
+a {
+  display: inline-block;
+  padding: 10px 20px; 
+  text-decoration: none;
+  color: #fff; 
+  background-color:  #161d25; 
+  border-radius: 5px; 
+  border: 1px solid #022e5c; 
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-top: 10px;;
+}
+
+a:hover {
+  background-color: #563d2b; 
+  color: #fff;
+}
